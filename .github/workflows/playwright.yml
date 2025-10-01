@@ -1,0 +1,27 @@
+name: Playwright tests
+on:
+  push:
+    branches: [main]
+jobs:
+  playwrighttests:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.55.1-jammy
+      env:
+        ADMIN_USERNAME: ${ { secrets.ADMIN_USERNAME } }
+        ADMIN_PASSWORD: ${ { secrets.ADMIN_PASSWORD } }
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.20.0'
+      - name: Run tests
+        run: |
+          echo "Start the shopping store application"
+          ./shopping-store-linux-amd64 &
+          echo "Install dependencies from lockfile"
+          npm ci
+          echo "Run Playwright tests"
+          npm run test:ci
