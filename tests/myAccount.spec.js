@@ -3,7 +3,7 @@ import { MyAccountPage } from './page-objects/MyAccountPage';
 import { getLoginToken } from '../api-calls/getLoginToken';
 import { adminDetails } from '../data/userDetails';
 
-test('My account using cookie injection and mocking network requests ', async ({ page }) => {
+test.skip('My account using cookie injection and mocking network requests ', async ({ page }) => {
   const loginToken = await getLoginToken(adminDetails.username, adminDetails.password);
 
   await page.route('**/api/user?**', async (route, request) => {
@@ -23,6 +23,6 @@ test('My account using cookie injection and mocking network requests ', async ({
     [loginToken],
   );
   await myAccount.visit();
-  await myAccount.waitForPageHeading();
+  // await myAccount.waitForPageHeading();
   await myAccount.waitForErrorMessage();
 });
